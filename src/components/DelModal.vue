@@ -1,24 +1,22 @@
 <template>
   <div class="modal fade" id="delModal" tabindex="-1" ref="delModal">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title">{{ `是否刪除${item}` }}</h5>
-          <button type="button" class="btn-close" @click="hideModal"></button>
-        </div>
-        <div class="modal-body">
-          <p>{{ `刪除"${item} ${deleteItem.title || deleteItem.id}"？ (刪除後將無法復原)` }}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-gray" @click="hideModal">
-            取消
-          </button>
+      <div class="modal-content text-center">
+        <div class="modal-body pb-4 pt-2">
+          <div class="pb-1">
+            <i class="bi bi-exclamation-triangle-fill opacity-50" style="font-size: 4rem; color: var(--bs-warning);"></i>
+            <p class="fw-bolder mb-2">{{ `確定要刪除"${item} ${deleteItem.title || deleteItem.id}"？` }}</p>
+            <p class="text-gray">刪除後將無法復原</p>
+          </div>
           <button
             type="button"
-            class="btn btn-danger"
+            class="btn btn-outline-danger me-1"
             @click="$emit('delete')"
           >
             確認
+          </button>
+          <button type="button" class="btn btn-gray ms-1" @click="hideModal">
+            取消
           </button>
         </div>
       </div>

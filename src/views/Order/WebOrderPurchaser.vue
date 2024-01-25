@@ -16,7 +16,7 @@
         <div class="card border-secondary mb-5">
           <div class="card-body p-3 rounded">
             <h5 class="fw-bolder mb-3">填寫訂購人資料</h5>
-            <VForm v-slot="{ errors, validate }" @submit="onSubmit">
+            <VForm v-slot="{ errors }" @submit="onSubmit">
               <div class="mb-3">
                 <label for="purchaser" class="form-label">訂購人姓名*</label>
                 <VField
@@ -145,9 +145,8 @@
                 />
               </div>
               <button
-                type="button"
+                type="submit"
                 class="btn btn-secondary w-100"
-                @click="onSubmit(validate)"
               >
                 下一步
               </button>
@@ -190,20 +189,10 @@ export default {
       const phoneNumber = /^(09)[0-9]{8}$/
       return phoneNumber.test(value) ? true : '請填寫正確的電話號碼'
     },
-    async onSubmit(validate) {
-      try {
-        const isValid = await validate()
-        if (!isValid.valid) return
-        this.purchaser.address = `${this.delivery.way}：${
+    onSubmit() {
+      this.purchaser.address = `${this.delivery.way}：${
           this.delivery.address || '到店'
         }`
-      } catch (e) {
-        this.emitter.emit('sendMsg', {
-          message: '表單驗證失敗',
-          status: 'error'
-        })
-      }
-
       const API_ORDER = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order`
       this.isLoading = true
       this.axios

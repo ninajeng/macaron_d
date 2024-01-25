@@ -16,9 +16,9 @@
     <div class="container py-5 flex-grow-1 d-flex align-items-center">
       <div class="row w-100 justify-content-center">
         <div class="col-lg-5">
-          <div class="p-3 bg-light bg-opacity-25 rounded text-center">
-            <h2 class="mt-2 mb-3">後台登入</h2>
-            <VForm v-slot="{ errors, validate }">
+          <div class="p-3 bg-light bg-opacity-25 rounded">
+            <h2 class="mt-2 mb-3 text-center">後台登入</h2>
+            <VForm v-slot="{ errors }" @submit="submit">
               <div class="form-floating mb-4">
                 <VField
                   type="email"
@@ -53,13 +53,14 @@
                 />
                 <label for="password">密碼</label>
               </div>
-              <button
-                type="button"
-                class="btn bg-primary text-white"
-                @click="submit(validate)"
-              >
-                登入
-              </button>
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn bg-primary text-white"
+                >
+                  登入
+                </button>
+              </div>
             </VForm>
           </div>
         </div>
@@ -92,17 +93,7 @@ export default {
     }
   },
   methods: {
-    async submit(validate) {
-      try {
-        const isValid = await validate()
-        if (!isValid.valid) return
-      } catch (e) {
-        emitter.emit('sendMsg', {
-          message: '表單驗證失敗',
-          status: 'error'
-        })
-        return
-      }
+    submit() {
       this.isLoading = true
       const API_LOGIN = `${process.env.VUE_APP_API}admin/signin`
       this.axios

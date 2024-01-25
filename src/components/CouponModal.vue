@@ -2,40 +2,55 @@
   <LoadingVue :active="isLoading" style="z-index: 1056"></LoadingVue>
   <div class="modal fade" tabindex="-1" ref="couponModal">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white">優惠券資料</h1>
-          <button type="button" class="btn-close" @click="hideModal"></button>
-        </div>
-        <div class="modal-body p-4 text-secondary">
+      <VForm v-slot="{ errors }">
+        <div class="modal-content">
+          <div class="modal-header bg-secondary">
+            <h1 class="modal-title fs-5 text-white">優惠券資料</h1>
+            <button type="button" class="btn-close" @click="hideModal"></button>
+          </div>
+          <div class="modal-body p-4 text-secondary">
             <div class="mb-3">
               <label for="code" class="form-label">優惠券代碼*</label>
-              <input
+              <VField
                 type="text"
-                class="form-control"
+                name="優惠券代碼"
                 id="code"
+                class="form-control"
+                :class="{ 'is-invalid': formInvalid['優惠券代碼'] }"
+                @change="delete formInvalid['優惠券代碼']"
+                rules="required"
                 v-model="coupon.code"
                 placeholder="請輸入優惠券代碼"
               />
+              <ErrorMessage name="優惠券代碼" class="invalid-feedback" />
             </div>
             <div class="mb-3">
               <label for="title" class="form-label">優惠券名稱*</label>
-              <input
+              <VField
                 type="text"
-                class="form-control"
+                name="優惠券名稱"
                 id="title"
+                class="form-control"
+                :class="{ 'is-invalid': formInvalid['優惠券名稱'] }"
+                @change="delete formInvalid['優惠券名稱']"
+                rules="required"
                 v-model="coupon.title"
                 placeholder="請輸入優惠券名稱"
               />
+              <ErrorMessage name="優惠券名稱" class="invalid-feedback" />
             </div>
             <div class="mb-3">
               <label for="percent" class="form-label"
                 >折扣內容* <span class="text-muted">(限制：1~99)</span></label
               >
               <div>
-                <input
+                <VField
                   type="number"
+                  name="優惠券折扣數"
                   class="form-control d-inline-block me-1"
+                  :class="{ 'is-invalid': formInvalid['優惠券折扣數'] }"
+                  @change="delete formInvalid['優惠券折扣數']"
+                  rules="required"
                   style="width: 250px"
                   id="percent"
                   v-model="coupon.percent"
@@ -46,14 +61,19 @@
                 =<span class="ms-1"
                   >{{ coupon.percent ? coupon.percent / 10 : '？' }}折</span
                 >
+                <ErrorMessage name="優惠券折扣數" class="invalid-feedback" />
               </div>
             </div>
             <div class="d-lg-flex">
               <div class="me-5">
                 <label for="dueDate" class="form-label">優惠截止日期*</label>
-                <input
+                <VField
                   type="date"
+                  name="截止日期"
                   class="form-control"
+                  :class="{ 'is-invalid': formInvalid['截止日期'] }"
+                  @change="delete formInvalid['截止日期']"
+                  rules="required"
                   style="width: 250px"
                   id="dueDate"
                   ref="dueDateDefault"
@@ -62,46 +82,63 @@
                   min="2123-1-01"
                   max="2123-12-31"
                 />
+                <ErrorMessage name="截止日期" class="invalid-feedback" />
               </div>
               <div class="mt-3 mt-lg-0">
                 <label for="dueTimeHour" class="form-label"
                   >優惠截止時間*</label
                 >
                 <div>
-                  <input
+                  <VField
                     type="number"
+                    name="截止時間(hour)"
                     class="form-control d-inline-block w-auto"
+                    :class="{ 'is-invalid': formInvalid['截止時間(hour)'] }"
+                    @change="delete formInvalid['截止時間(hour)']"
+                    rules="required"
                     id="dueTimeHour"
                     v-model="dueTimeHour"
                     placeholder="時"
                     min="0"
                     max="23"
                   />：
-                  <input
+                  <VField
                     type="number"
+                    name="截止時間(minute)"
                     class="form-control d-inline-block w-auto"
-                    id="dueHour"
+                    :class="{ 'is-invalid': formInvalid['截止時間(minute)'] }"
+                    @change="delete formInvalid['截止時間(minute)']"
+                    rules="required"
                     v-model="dueTimeMinute"
                     placeholder="分"
                     min="0"
                     max="59"
                   />：
-                  <input
+                  <VField
                     type="number"
+                    name="截止時間(sec)"
                     class="form-control d-inline-block w-auto"
-                    id="dueHour"
+                    :class="{ 'is-invalid': formInvalid['截止時間(sec)'] }"
+                    @change="delete formInvalid['截止時間(sec)']"
+                    rules="required"
                     v-model="dueTimeSec"
                     placeholder="秒"
                     min="0"
                     max="59"
                   />
+                  <ErrorMessage
+                    name="截止時間(hour)"
+                    class="invalid-feedback"
+                  />
+                  <ErrorMessage
+                    name="截止時間(minute)"
+                    class="invalid-feedback"
+                  />
+                  <ErrorMessage name="截止時間(sec)" class="invalid-feedback" />
                 </div>
               </div>
             </div>
-            <p class="text-muted ms-1" style="font-size: 0.75rem">
-              {{ `截止日 unix 格式：${dueDate_unix}` }}
-            </p>
-            <div class="form-check mb-3">
+            <div class="form-check my-3">
               <input
                 type="checkbox"
                 name="is_enabled"
@@ -110,18 +147,27 @@
                 v-model="coupon.is_enabled"
                 :checked="coupon.is_enabled === 1"
               />
-              <label for="is_enabled" class="form-check-label">是否啟用*</label>
+              <label for="is_enabled" class="form-check-label">是否啟用</label>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-gray"
+              @click="hideModal"
+            >
+              取消
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="updateCoupon(errors)"
+            >
+              {{ coupon.id ? '更新' : '新增' }}
+            </button>
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-gray" @click="hideModal">
-            取消
-          </button>
-          <button type="button" class="btn btn-secondary" @click="updateCoupon">
-            {{ coupon.id ? '更新' : '新增' }}
-          </button>
-        </div>
-      </div>
+      </VForm>
     </div>
   </div>
 </template>
@@ -134,6 +180,7 @@ export default {
       modal: {},
       coupon: {
         code: '',
+        title: '',
         percent: 90,
         is_enabled: true
       },
@@ -142,6 +189,7 @@ export default {
       dueTimeHour: '23',
       dueTimeMinute: '59',
       dueTimeSec: '59',
+      formInvalid: {},
       isLoading: false
     }
   },
@@ -192,6 +240,7 @@ export default {
   },
   methods: {
     showModal() {
+      this.formInvalid = {}
       this.modal.show()
     },
     hideModal() {
@@ -214,15 +263,9 @@ export default {
         this.dueTimeSec = time[2]
       }
     },
-    updateCoupon() {
-      const error = this.checkFormatError().join(', ')
-      if (error) {
-        this.emitter.emit('sendMsg', {
-          message: error,
-          status: 'error',
-          title: '資料格式錯誤'
-        })
-      } else {
+    updateCoupon(errors = {}) {
+      this.formInvalid = { ...errors }
+      if (Object.keys(this.formInvalid).length === 0) {
         this.coupon.is_enabled = this.coupon.is_enabled ? 1 : 0
         if (this.coupon.id) {
           this.$emit('updateCoupon', this.coupon)
@@ -235,14 +278,6 @@ export default {
       if (num < min) return min
       else if (num > max) return max
       else return num
-    },
-    checkFormatError() {
-      const errMsg = []
-      if (!this.coupon.code) errMsg.push('優惠券代碼為必填')
-      if (!this.coupon.title) errMsg.push('優惠券名稱為必填')
-      if (!this.coupon.percent) errMsg.push('折扣內容日為必填')
-      if (!this.coupon.due_date) errMsg.push('優惠截止日為必填')
-      return errMsg
     }
   },
   mounted() {

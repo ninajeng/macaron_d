@@ -142,6 +142,7 @@
         style="max-width: 90vw"
       >
         <div class="card-body text-center p-4">
+          <i class="bi bi-exclamation-triangle-fill opacity-50" style="font-size: 4rem; color: var(--bs-warning);"></i>
           <p>{{`確定要${removeMsg === '' ? '清空收藏' : `將"${removeMsg}"從收藏中移除`}嗎？`}}</p>
           <div class="text-center">
             <button

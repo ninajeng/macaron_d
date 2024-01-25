@@ -292,6 +292,7 @@ export default {
       if (this.collect !== '') this.emitter.emit('collectInfo', this.collect)
     },
     navStyle() {
+      this.$refs.navbarNav.classList.remove('show')
       if (window.scrollY !== 0) {
         this.$refs.webNav.classList.add('shadow')
         this.$refs.toTop.classList.remove('opacity-0')

@@ -190,7 +190,7 @@
             >訂閱折扣碼</span
           >，結帳金額享八五折優惠！
         </p>
-        <VForm v-slot="{ errors, validate }">
+        <VForm v-slot="{ errors }" @submit="subscribe">
           <div class="input-group">
             <VField
               name="信箱"
@@ -203,9 +203,8 @@
               rules="email|required"
             />
             <button
-              type="button"
-              class="btn btn-gray"
-              @click="subscribe(validate)"
+              type="submit"
+              class="btn btn-gray rounded-end"
             >
               訂閱並取得折扣碼
             </button>
@@ -376,19 +375,10 @@ export default {
     WebRecommand
   },
   methods: {
-    async subscribe(validate) {
-      try {
-        const isValid = await validate()
-        if (!isValid.valid) return
-        this.$refs.subscribeEmail.textContent = this.userEmail
-        this.subscribeView = true
-        this.$refs.userEmail.reset()
-      } catch (e) {
-        this.emitter.emit('sendMsg', {
-          message: '信箱格式錯誤',
-          status: 'error'
-        })
-      }
+    subscribe() {
+      this.$refs.subscribeEmail.textContent = this.userEmail
+      this.subscribeView = true
+      this.$refs.userEmail.reset()
     },
     copyCode(code, e) {
       e.target.classList.add('disabled')

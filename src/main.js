@@ -8,7 +8,7 @@ import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
 import WebLoading from '@/components/WebLoading.vue'
 import { currency, unixToDate, unixToTime, unixToDatetime, datetimeToUnix } from '@/methods/filters'
 import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
-import { required, email, length, max } from '@vee-validate/rules'
+import { required, email, length, max, numeric } from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
 
@@ -16,6 +16,7 @@ defineRule('required', required)
 defineRule('email', email)
 defineRule('length', length)
 defineRule('max', max)
+defineRule('numeric', numeric)
 configure({
   generateMessage: localize({ zh_TW: zhTW })
 })

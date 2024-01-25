@@ -19,7 +19,7 @@
           </p>
         </div>
         </div>
-        <VForm v-slot="{ errors, validate }">
+        <VForm v-slot="{ errors }" @submit="searchTest">
           <div class="input-group" style="max-width: 400px;">
             <VField
               name="訂單編號"
@@ -28,12 +28,10 @@
               placeholder="請輸入20碼訂單編號"
               v-model="orderId"
               rules="length:20"
-              @keypress="checkKeypress($event, validate)"
             />
             <button
-              type="button"
-              class="btn btn-gray"
-              @click.prevent="search(validate)"
+              type="submit"
+              class="btn btn-gray rounded-end"
             >
               <i class="bi bi-search me-2"></i>查詢
             </button>
@@ -77,29 +75,14 @@ export default {
     WebRecommand
   },
   methods: {
-    async search(validate) {
-      try {
-        const isValid = await validate()
-        if (!isValid.valid) return
-        this.isLoading = true
-        this.$refs.OrderStatus.getOrder(this.orderId)
-        this.errorId = this.orderId
-      } catch (e) {
-        this.emitter.emit('sendMsg', {
-          message: '訂單編號格式驗證失敗',
-          status: 'error'
-        })
-      }
+    searchTest() {
+      this.isLoading = true
+      this.$refs.OrderStatus.getOrder(this.orderId)
+      this.errorId = this.orderId
     },
     getError() {
       this.isLoading = false
       this.searchError = true
-    },
-    checkKeypress(e, validate) {
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        this.search(validate)
-      }
     }
   },
   mounted() {

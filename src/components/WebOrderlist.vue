@@ -118,6 +118,7 @@
         style="max-width: 90vw"
       >
         <div class="card-body text-center p-4">
+          <i class="bi bi-exclamation-triangle-fill opacity-50" style="font-size: 4rem; color: var(--bs-warning);"></i>
           <p>{{`確定要${deleteMsg === '' ? '清空購物車' : `將"${deleteMsg}"從購物車移除`}嗎？`}}</p>
           <div class="text-center">
             <button
