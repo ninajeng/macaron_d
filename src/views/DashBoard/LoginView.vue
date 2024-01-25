@@ -16,8 +16,8 @@
     <div class="container py-5 flex-grow-1 d-flex align-items-center">
       <div class="row w-100 justify-content-center">
         <div class="col-lg-5">
-          <div class="p-3 bg-light bg-opacity-25 rounded">
-            <h2 class="text-center mt-2 mb-3">後台登入</h2>
+          <div class="p-3 bg-light bg-opacity-25 rounded text-center">
+            <h2 class="mt-2 mb-3">後台登入</h2>
             <VForm v-slot="{ errors, validate }">
               <div class="form-floating mb-4">
                 <VField
@@ -55,7 +55,7 @@
               </div>
               <button
                 type="button"
-                class="btn bg-graySlight w-100"
+                class="btn bg-primary text-white"
                 @click="submit(validate)"
               >
                 登入
